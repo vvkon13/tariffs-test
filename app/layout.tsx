@@ -42,11 +42,11 @@ export const metadata: Metadata = {
     description: "Персональные программы тренировок. Скидки до 70% при оформлении в течение 2 минут.",
     type: "website",
     locale: "ru_RU",
-    url: 'https://tariffs-test.vercel.app/',
+    url: 'https://tariffs-test-delta.vercel.app/',
     siteName: "FitHub Tariffs",
     images: [
       {
-        url: 'https://tariffs-test.vercel.app/og.png',
+        url: 'https://tariffs-test-delta.vercel.app/og.png',
         width: 1200,
         height: 630,
         alt: "Фитнес-тарифы — выбери свой план тренировок",
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: "Фитнес-тарифы | Скидки до 70%",
     description: "Персональные программы тренировок. Успей оформить со скидкой!",
-    images: ['https://tariffs-test.vercel.app/og.png'],
+    images: ['https://tariffs-test-delta.vercel.app/og.png'],
   },
 };
 
