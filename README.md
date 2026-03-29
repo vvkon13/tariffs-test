@@ -21,7 +21,7 @@
 
 ```bash
 # 1. Клонируйте репозиторий
-git clone <repository-url>
+git clone https://github.com/vvkon13/tariffs-test.git
 cd tariffs-test
 
 # 2. Установите зависимости
