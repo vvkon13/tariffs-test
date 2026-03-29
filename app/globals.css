@@ -1,25 +1,26 @@
-/* app/globals.css */
 @import "tailwindcss";
 
 :root {
-  /* Colors */
+  /* Colors from design */
   --color-white: #FFFFFF;
   --color-accent: #FDB056;
-  --color-accent-warning: #FFBB00; 
-  --color-accent-error: #EF4444;   
+  --color-accent-warning: #FFBB00;
+  --color-accent-error: #EF4444;
   --color-text-gray: #CDCDCD;
-  --color-text-primary: #FFFFFF;
-  --color-bg-dark: #313637;
+  --color-text-muted: #919191;      /* Для зачёркнутой цены */
+  --color-border-regular: #484D4E;   /* Обычная граница карточки */
+  --color-bg-card: #313637;          /* Фон карточки */
+  --color-bg-page: #1a1a1a;          /* Фон страницы (если нужен) */
   
   /* Fonts */
   --font-montserrat: var(--font-montserrat), system-ui, sans-serif;
   --font-raleway: var(--font-raleway), system-ui, sans-serif;
+  --font-gilroy: var(--font-gilroy), var(--font-montserrat), system-ui, sans-serif;
   
   /* Spacing */
   --header-height: 103px;
 }
 
-/* 🎯 Tailwind v4: Custom theme values */
 @theme inline {
   /* Colors */
   --color-white: var(--color-white);
@@ -27,17 +28,20 @@
   --color-accent-warning: var(--color-accent-warning);
   --color-accent-error: var(--color-accent-error);
   --color-text-gray: var(--color-text-gray);
-  --color-text-primary: var(--color-text-primary);
-  --color-bg-dark: var(--color-bg-dark);
+  --color-text-muted: var(--color-text-muted);
+  --color-border-regular: var(--color-border-regular);
+  --color-bg-card: var(--color-bg-card);
   
   /* Fonts */
   --font-montserrat: var(--font-montserrat);
   --font-raleway: var(--font-raleway);
+  --font-gilroy: var(--font-gilroy);
   
-  /* Custom breakpoints (по макету) */
+  /* Custom breakpoints */
   --breakpoint-3xl: 1920px;
 }
 
+/* Отключаем темную тему */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #ffffff;
@@ -45,26 +49,30 @@
   }
 }
 
-/* 🧱 Base styles */
 body {
-  background: var(--color-bg-dark);
-  color: var(--color-text-primary);
+  background: var(--color-bg-dark, #1a1a1a);
+  color: var(--color-white);
   font-family: var(--font-montserrat);
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* Утилиты для бейджей */
+.badge-hit {
+  font-family: var(--font-gilroy);
+  font-weight: 500;
+  letter-spacing: 0;
 }
 
+.badge-discount {
+  font-family: var(--font-gilroy);
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+/* Анимация мигания кнопки */
 @keyframes pulse-glow {
   0%, 100% { box-shadow: 0 0 0 rgba(253, 176, 86, 0); }
-  50% { box-shadow: 0 0 20px rgba(253, 176, 86, 0.6); }
+  50% { box-shadow: 0 0 25px rgba(253, 176, 86, 0.7); }
 }
 .animate-pulse-glow {
   animation: pulse-glow 1.5s ease-in-out infinite;

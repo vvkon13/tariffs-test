@@ -1,3 +1,4 @@
+// components/tariffs/TariffsGrid.tsx
 import { TariffWithDiscount } from '@/types/tariff';
 import { TariffCard } from './TariffCard';
 
@@ -14,11 +15,53 @@ export function TariffsGrid({ tariffs }: TariffsGridProps) {
     );
   }
 
+  // 🔹 Сортируем по скидке (убывание) + is_best в приоритете
+  const sortedTariffs = [...tariffs].sort((a, b) => {
+    if (a.is_best && !b.is_best) return -1;
+    if (!a.is_best && b.is_best) return 1;
+    return b.discountPercent - a.discountPercent;
+  });
+
+  // Первая карточка — "хит" (максимальная скидка)
+  const [hitTariff, ...otherTariffs] = sortedTariffs;
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-      {tariffs.map((tariff,idx) => (
-        <TariffCard key={`${tariff.id}#${idx}`} tariff={tariff} />
-      ))}
-    </div>
+    <>
+      {/* 🖥️ Desktop: Grid 3 колонки */}
+      <div className="hidden xl:grid grid-cols-3 gap-6">
+        {/* Хитовая карточка — горизонтальная, на всю ширину */}
+        {hitTariff && (
+          <div className="col-span-3">
+            <TariffCard 
+              tariff={hitTariff} 
+              isHorizontal={true} 
+              isHit={true} 
+            />
+          </div>
+        )}
+        
+        {/* Остальные — вертикальные, по 1 в колонке */}
+        {otherTariffs.map((tariff) => (
+          <TariffCard 
+            key={tariff.id} 
+            tariff={tariff} 
+            isHorizontal={false} 
+            isHit={false}
+          />
+        ))}
+      </div>
+
+      {/* 📱 Mobile/Tablet: Flex column, все горизонтальные */}
+      <div className="xl:hidden flex flex-col gap-4 px-4">
+        {sortedTariffs.map((tariff, index) => (
+          <TariffCard 
+            key={tariff.id} 
+            tariff={tariff} 
+            isHorizontal={true} 
+            isHit={index === 0} // Первая = хит
+          />
+        ))}
+      </div>
+    </>
   );
 }
