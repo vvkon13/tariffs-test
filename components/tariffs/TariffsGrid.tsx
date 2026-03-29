@@ -1,17 +1,14 @@
 // components/tariffs/TariffsGrid.tsx (может быть серверным или клиентским - не важно)
-'use client'; // Оставляем для Framer Motion анимаций
+'use client'; 
 
 import { useMemo } from 'react';
-import { TariffWithDiscount } from '@/types/tariff';
 import { TariffCard } from './TariffCard';
+import { useTariffSelection } from '@/contexts/TariffSelectionContext';
 
-interface TariffsGridProps {
-  tariffs: TariffWithDiscount[];
-  selectedTariffId: string | null;
-  onSelectTariff: (uniqueId: string) => void;
-}
 
-export function TariffsGrid({ tariffs, selectedTariffId, onSelectTariff }: TariffsGridProps) {
+export function TariffsGrid() {
+  const { tariffs, selectedTariffId, setSelectedTariffId } = useTariffSelection();
+
   if (!tariffs.length) {
     return (
       <div className="text-center text-[#CDCDCD] py-12">
@@ -20,7 +17,6 @@ export function TariffsGrid({ tariffs, selectedTariffId, onSelectTariff }: Tarif
     );
   }
 
-  // Сортировка: по скидке (убывание), is_best в приоритете
   const sortedTariffs = useMemo(() => {
     return [...tariffs].sort((a, b) => {
       if (a.is_best && !b.is_best) return -1;
@@ -36,37 +32,37 @@ export function TariffsGrid({ tariffs, selectedTariffId, onSelectTariff }: Tarif
       <div className="hidden xl:grid grid-cols-3 gap-6">
         {hitTariff && (
           <div className="col-span-3">
-            <TariffCard 
-              tariff={hitTariff} 
-              isHorizontal={true} 
+            <TariffCard
+              tariff={hitTariff}
+              isHorizontal={true}
               isHit={true}
               isSelected={selectedTariffId === hitTariff.uniqueId}
-              onSelect={() => onSelectTariff(hitTariff.uniqueId)}
+              onSelect={() => setSelectedTariffId(hitTariff.uniqueId)}
             />
           </div>
         )}
         {otherTariffs.map((tariff) => (
-          <TariffCard 
-            key={tariff.uniqueId} 
-            tariff={tariff} 
-            isHorizontal={false} 
+          <TariffCard
+            key={tariff.uniqueId}
+            tariff={tariff}
+            isHorizontal={false}
             isHit={false}
             isSelected={selectedTariffId === tariff.uniqueId}
-            onSelect={() => onSelectTariff(tariff.uniqueId)}
+            onSelect={() => setSelectedTariffId(tariff.uniqueId)}
           />
         ))}
       </div>
 
       {/* 📱 Mobile/Tablet: Flex column */}
-      <div className="xl:hidden flex flex-col gap-4 px-4">
+      <div className="xl:hidden flex flex-col gap-4">
         {sortedTariffs.map((tariff, index) => (
-          <TariffCard 
-            key={tariff.uniqueId} 
-            tariff={tariff} 
-            isHorizontal={true} 
+          <TariffCard
+            key={tariff.uniqueId}
+            tariff={tariff}
+            isHorizontal={true}
             isHit={index === 0}
             isSelected={selectedTariffId === tariff.uniqueId}
-            onSelect={() => onSelectTariff(tariff.uniqueId)}
+            onSelect={() => setSelectedTariffId(tariff.uniqueId)}
           />
         ))}
       </div>

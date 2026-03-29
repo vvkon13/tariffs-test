@@ -7,14 +7,10 @@
   --color-accent-warning: #FFBB00;
   --color-accent-error: #EF4444;
   --color-text-gray: #CDCDCD;
-  --color-text-muted: #919191;
-  /* Для зачёркнутой цены */
+  --color-text-muted: #9B9B9B;
   --color-border-regular: #484D4E;
-  /* Обычная граница карточки */
   --color-bg-card: #313637;
-  /* Фон карточки */
-  --color-bg-page: #1a1a1a;
-  /* Фон страницы (если нужен) */
+  --color-bg-page: #232829;
 
   /* Fonts */
   --font-montserrat: var(--font-montserrat), system-ui, sans-serif;
@@ -57,7 +53,6 @@
   --color-button-text: var(--color-button-text);
 }
 
-/* Отключаем темную тему */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #ffffff;
@@ -66,13 +61,12 @@
 }
 
 body {
-  background: var(--color-bg-dark, #1a1a1a);
+  background: var(--color-bg-dark, #232829);
   color: var(--color-white);
   font-family: var(--font-montserrat);
   -webkit-font-smoothing: antialiased;
 }
 
-/* Утилиты для бейджей */
 .badge {
   font-family: var(--font-gilroy);
   font-weight: 500;
@@ -80,7 +74,6 @@ body {
 }
 
 
-/* Анимация мигания кнопки */
 @keyframes pulse-glow {
 
   0%,

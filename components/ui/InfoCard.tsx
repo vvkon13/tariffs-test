@@ -1,6 +1,4 @@
 // components/ui/InfoCard.tsx
-import { FadeIn } from './FadeIn';
-
 
 interface InfoCardProps {
   text?: string;
@@ -12,7 +10,7 @@ export function InfoCard({
   className = ""
 }: InfoCardProps) {
   return (
-    <FadeIn
+    <div
       className={`max-w-125 w-full rounded-2xl bg-[#2D3233] p-[14px_20px_14px_12px] flex items-start gap-1.5 xs:gap-3  ${className}`}
     >
       <svg 
@@ -39,6 +37,6 @@ export function InfoCard({
       <p className="text-white font-normal font-montserrat leading-[130%] text-[12px] sm:text-[16px] text-left">
         {text}
       </p>
-    </FadeIn>
+    </div>
   );
 }

@@ -1,24 +1,26 @@
 // contexts/TariffSelectionContext.tsx
 'use client';
 
-import { createContext, useContext, useState, ReactNode, useCallback } from 'react';
+import { createContext, useContext, useState, ReactNode, useCallback, useMemo} from 'react';
 import { TariffWithDiscount } from '@/types/tariff';
+import { useTimer } from '@/contexts/TimerContext';
 
 interface TariffSelectionContextType {
+  tariffs: TariffWithDiscount[];
   selectedTariffId: string | null;
-  setSelectedTariffId: (id: string) => void;
-  
+  setSelectedTariffId: (uniqueId: string) => void;
   agreementChecked: boolean;
   setAgreementChecked: (checked: boolean) => void;
-  
   isPurchasing: boolean;
-  handlePurchase: (tariffs: TariffWithDiscount[], isExpired: boolean) => Promise<void>;
-  
+  handlePurchase: () => Promise<void>;
   showAgreementError: boolean;
-  showNoSelectionError: boolean;
+  setShowAgreementError: (show: boolean) => void;
+  selectedTariff: TariffWithDiscount | undefined;
+  currentPrice: number;
 }
 
 const TariffSelectionContext = createContext<TariffSelectionContextType | undefined>(undefined);
+
 
 export function TariffSelectionProvider({ 
   children,
@@ -28,32 +30,33 @@ export function TariffSelectionProvider({
   initialTariffs: TariffWithDiscount[];
 }) {
   const [selectedTariffId, setSelectedTariffId] = useState<string | null>(
-    initialTariffs.find(t => t.is_best)?.id || initialTariffs[0]?.id || null
+    initialTariffs.find(t => t.is_best)?.uniqueId || initialTariffs[0]?.uniqueId || null
   );
   const [agreementChecked, setAgreementChecked] = useState(false);
   const [isPurchasing, setIsPurchasing] = useState(false);
   const [showAgreementError, setShowAgreementError] = useState(false);
-  const [showNoSelectionError, setShowNoSelectionError] = useState(false);
 
-  // Автовыбор тарифа при изменении списка
-  const handleSelectTariff = useCallback((id: string) => {
-    setSelectedTariffId(id);
-    setShowNoSelectionError(false);
+  const { isExpired } = useTimer();
+
+  const handleSelectTariff = useCallback((uniqueId: string) => {
+    setSelectedTariffId(uniqueId);
   }, []);
 
-  // Логика покупки
-  const handlePurchase = useCallback(async (tariffs: TariffWithDiscount[], isExpired: boolean) => {
-    // Валидация: выбран ли тариф
-    if (!selectedTariffId) {
-      setShowNoSelectionError(true);
-      setTimeout(() => setShowNoSelectionError(false), 2000);
-      return;
-    }
-    
-    // Валидация: согласен ли пользователь
+  const selectedTariff = useMemo(() => 
+    initialTariffs.find(t => t.uniqueId === selectedTariffId), 
+    [initialTariffs, selectedTariffId]
+  );
+
+  const currentPrice = useMemo(() => 
+    selectedTariff ? (isExpired ? selectedTariff.full_price : selectedTariff.price) : 0,
+    [selectedTariff, isExpired]
+  );
+
+  const handlePurchase = useCallback(async () => {
+    if (!selectedTariffId) return;
+
     if (!agreementChecked) {
       setShowAgreementError(true);
-      setTimeout(() => setShowAgreementError(false), 2000);
       return;
     }
 
@@ -61,49 +64,58 @@ export function TariffSelectionProvider({
     setIsPurchasing(true);
 
     try {
-      const selected = tariffs.find(t => t.id === selectedTariffId);
-      if (!selected) throw new Error('Tariff not found');
-
-      // Определяем цену (со скидкой или полная)
-      const price = isExpired ? selected.full_price : selected.price;
+      if (!selectedTariff) throw new Error('Tariff not found');
 
       console.log('🚀 Purchase:', {
-        tariffId: selectedTariffId,
-        tariff: selected,
-        price,
+        tariffId: selectedTariff.id,
+        uniqueId: selectedTariff.uniqueId,
+        price: currentPrice,
         timestamp: new Date().toISOString(),
       });
 
-      // 🔄 Здесь будет реальный запрос к бэкенду
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      alert(`✅ Тариф "${selected.period}" успешно оформлен!\nСумма: ${price} ₽`);
+      alert(`Тариф "${selectedTariff.period}" успешно оформлен!\nСумма: ${currentPrice} ₽`);
       
     } catch (error) {
       console.error('Purchase failed:', error);
-      alert('❌ Произошла ошибка при оформлении. Попробуйте позже.');
+      alert('Произошла ошибка при оформлении. Попробуйте позже.');
     } finally {
       setIsPurchasing(false);
     }
-  }, [selectedTariffId, agreementChecked]);
+  }, [selectedTariffId, agreementChecked, selectedTariff, currentPrice]);
+
+  const contextValue = useMemo(() => ({
+    tariffs: initialTariffs,
+    selectedTariffId,
+    setSelectedTariffId: handleSelectTariff,
+    agreementChecked,
+    setAgreementChecked,
+    isPurchasing,
+    handlePurchase,
+    showAgreementError,
+    setShowAgreementError,
+    selectedTariff,
+    currentPrice,
+  }), [
+    initialTariffs,
+    selectedTariffId,
+    handleSelectTariff,
+    agreementChecked,
+    isPurchasing,
+    handlePurchase,
+    showAgreementError,
+    setShowAgreementError,
+    selectedTariff,
+    currentPrice,
+  ]);
 
   return (
-    <TariffSelectionContext.Provider value={{
-      selectedTariffId,
-      setSelectedTariffId: handleSelectTariff,
-      agreementChecked,
-      setAgreementChecked,
-      isPurchasing,
-      handlePurchase,
-      showAgreementError,
-      showNoSelectionError,
-    }}>
+    <TariffSelectionContext.Provider value={contextValue}>
       {children}
     </TariffSelectionContext.Provider>
   );
 }
 
-// Хук для удобного использования
 export function useTariffSelection() {
   const context = useContext(TariffSelectionContext);
   if (context === undefined) {

@@ -47,7 +47,7 @@ export async function fetchTariffs(): Promise<TariffWithDiscount[]> {
     return Tariff
     
   } catch (error) {
-    console.error('❌ Error in fetchTariffs:', error);
+    console.error('Error in fetchTariffs:', error);
     return [];
   }
 }

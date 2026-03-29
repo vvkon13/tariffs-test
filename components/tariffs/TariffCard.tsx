@@ -37,8 +37,8 @@ export function TariffCard({
                         : 'border-2 border-[#484D4E] bg-[#313637] hover:border-accent/70 hover:bg-[#3a4041]'
                 }
         ${isHorizontal
-                    ? 'p-[20px_16px_20px_20px] xs:p-[20px_16px_20px_30px] xl:p-[30px_80px_26px_19px] xl:rounded-[34px]'
-                    : 'p-[70px_18px_23px_18px] xl:rounded-[40px]'
+                    ? 'p-[20px_16px_20px_20px] xs:p-[20px_16px_20px_30px] xl:p-[34px_80px_30px_122px] xl:rounded-[34px]'
+                    : 'p-[70px_18px_33px_18px] xl:rounded-[40px]'
                 }
       `}
             initial={{ opacity: 0, y: 20 }}
@@ -51,7 +51,6 @@ export function TariffCard({
             whileHover={{ scale: isSelected ? 1.02 : 1.01 }}
             whileTap={{ scale: 0.99 }}
         >
-            {/* Индикатор выбора */}
             {isSelected && (
                 <motion.div
                     className="absolute bottom-4 right-4 w-6 h-6 rounded-full bg-accent flex items-center justify-center"
@@ -62,16 +61,24 @@ export function TariffCard({
                 </motion.div>
             )}
 
-            <DiscountBadge
-                percent={tariff.discountPercent}
-                isHit={isHit}
-                isVertical={!isHorizontal}
-            />
+            <AnimatePresence>
+                {!isExpired && (
+                    <motion.div
+                        initial={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        <DiscountBadge
+                            percent={tariff.discountPercent}
+                            isHit={isHit}
+                            isVertical={!isHorizontal}
+                        />
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {isHorizontal ? (
-                /* ───────── ГОРИЗОНТАЛЬНАЯ КАРТОЧКА (xl+) ───────── */
                 <div className="flex flex-row items-center justify-start xl:justify-end gap-7.5 xs:gap-12.5 xl:gap-10">
-                    {/* Левая часть: цена и период */}
                     <div className="flex flex-col items-center gap-3 xs:gap-4">
 
                         <h3 className="text-white font-medium leading-[120%] text-[16px] xs:text-[18px] sm:text-[26px] self-start xl:self-center">
@@ -111,7 +118,6 @@ export function TariffCard({
                         </div>
                     </div>
 
-                    {/* Правая часть: только описание */}
                     <div>
                         <p className="text-white font-normal leading-[130%] text-left text-[14px] sm:text-[16px]">
                             {tariff.text}
@@ -120,7 +126,6 @@ export function TariffCard({
                 </div>
 
             ) : (
-                /* ───────── ВЕРТИКАЛЬНАЯ КАРТОЧКА (<xl) ───────── */
                 <div className="flex flex-col items-center gap-10">
                     <h3 className="text-white font-medium text-[26px] leading-[120%] text-center">
                         {tariff.period}
@@ -161,7 +166,6 @@ export function TariffCard({
                 </div>
             )}
 
-            {/* ✨ Свечение для акцентной карточки */}
             {(tariff.is_best || isHit) && !isSelected && (
                 <motion.div
                     className="absolute inset-0 rounded-[34px] border-2 border-accent/30 pointer-events-none"

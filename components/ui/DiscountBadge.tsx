@@ -3,8 +3,8 @@
 
 interface DiscountBadgeProps {
     percent: number;
-    isHit?: boolean;      // Самая большая скидка
-    isVertical?: boolean; // Вертикальная карточка
+    isHit?: boolean;      
+    isVertical?: boolean; 
     className?: string;
 }
 
@@ -28,7 +28,6 @@ export function DiscountBadge({ percent, isHit = false, isVertical = false, clas
                 <span className="text-[22px] leading-[130%] hidden xl:block">−{percent}%</span>
             </div>
 
-            {/* ⭐ Бейдж "Хит!" (только для карточки с максимальной скидкой) */}
             {isHit && (
                 <span
                     className='badge absolute text-accent top-2 right-3.5 xs:top-1.5 xs:right-3.5 xl:right-5 xk:top-2.5 text-[13px] xs:text-[16px] xl:xs:text-[22px]'
