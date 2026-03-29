@@ -1,4 +1,4 @@
-// components/tariffs/TariffsGrid.tsx (может быть серверным или клиентским - не важно)
+// components/tariffs/TariffsGrid.tsx
 'use client'; 
 
 import { useMemo } from 'react';

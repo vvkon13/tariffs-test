@@ -24,13 +24,13 @@ export default async function HomePage() {
             </h1>
           <div className='flex flex-col xl:flex-row xl:items-stretch gap-0 xl:gap-22 pt-6 xs:pt-5 xl:pt-27.5'>
             <div className='flex justify-center xl:flex-col xl:w-95.25 xl:min-w-95.25'>
-              <div className='relative w-full max-w-95.25 xl:w-full xl:h-191.75'>
+              <div className='relative w-auto max-w-95.25 xl:w-full xl:h-191.75'>
                 <Image
                   alt="Мужчина"
                   src="/man.png"
                   width={381}
                   height={767}
-                  className='w-full h-50 xs:h-62.5 xl:h-191.75 object-contain'
+                  className='w-auto h-50 xs:h-62.5 xl:h-191.75 object-contain'
                   priority
                 />
               </div>
@@ -50,8 +50,6 @@ export default async function HomePage() {
           </div>
           <GuaranteeCard className='mt-5.5 xs:mt-6 xl:mt-16.5' />
         </section>
-
-
       </TariffSelectionProvider>
     </main>
   );

@@ -26,12 +26,39 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Тарифы | Пробная неделя",
-  description: "Выберите подходящий тариф и начните тренироваться уже сегодня",
-  keywords: ["тарифы", "фитнес", "пробная неделя", "подписка"],
+  title: "Тарифы | Фитнес-программа",
+  description: "Выберите подходящий тариф и начните тренироваться уже сегодня. Пробная неделя со скидкой до 70%.",
   robots: {
-    index: true,
-    follow: true,
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
+
+  openGraph: {
+    title: "Фитнес-тарифы | Начни меняться сегодня",
+    description: "Персональные программы тренировок. Скидки до 70% при оформлении в течение 2 минут.",
+    type: "website",
+    locale: "ru_RU",
+    url: 'https://tariffs-test.vercel.app/',
+    siteName: "FitHub Tariffs",
+    images: [
+      {
+        url: 'https://tariffs-test.vercel.app/og.png',
+        width: 1200,
+        height: 630,
+        alt: "Фитнес-тарифы — выбери свой план тренировок",
+      },
+    ],
+  },
+
+  twitter: {
+    card: 'summary_large_image',
+    title: "Фитнес-тарифы | Скидки до 70%",
+    description: "Персональные программы тренировок. Успей оформить со скидкой!",
+    images: ['https://tariffs-test.vercel.app/og.png'],
   },
 };
 

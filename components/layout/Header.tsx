@@ -1,3 +1,4 @@
+//components/layout/Header.tsx
 import { Timer } from '@/components/ui/Timer';
 
 export function Header() {
