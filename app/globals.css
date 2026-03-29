@@ -7,18 +7,28 @@
   --color-accent-warning: #FFBB00;
   --color-accent-error: #EF4444;
   --color-text-gray: #CDCDCD;
-  --color-text-muted: #919191;      /* Для зачёркнутой цены */
-  --color-border-regular: #484D4E;   /* Обычная граница карточки */
-  --color-bg-card: #313637;          /* Фон карточки */
-  --color-bg-page: #1a1a1a;          /* Фон страницы (если нужен) */
-  
+  --color-text-muted: #919191;
+  /* Для зачёркнутой цены */
+  --color-border-regular: #484D4E;
+  /* Обычная граница карточки */
+  --color-bg-card: #313637;
+  /* Фон карточки */
+  --color-bg-page: #1a1a1a;
+  /* Фон страницы (если нужен) */
+
   /* Fonts */
   --font-montserrat: var(--font-montserrat), system-ui, sans-serif;
   --font-raleway: var(--font-raleway), system-ui, sans-serif;
   --font-gilroy: var(--font-gilroy), var(--font-montserrat), system-ui, sans-serif;
-  
+
   /* Spacing */
   --header-height: 103px;
+
+  --color-checkbox-bg: #424748;
+  --color-checkbox-border: #606566;
+  --color-button-text: #191E1F;
+
+  --color-badge-bg: #FD5656;
 }
 
 @theme inline {
@@ -31,14 +41,18 @@
   --color-text-muted: var(--color-text-muted);
   --color-border-regular: var(--color-border-regular);
   --color-bg-card: var(--color-bg-card);
-  
+
   /* Fonts */
   --font-montserrat: var(--font-montserrat);
   --font-raleway: var(--font-raleway);
   --font-gilroy: var(--font-gilroy);
-  
+
   /* Custom breakpoints */
-  --breakpoint-3xl: 1920px;
+  --breakpoint-xs: 375px;
+
+  --color-checkbox-bg: var(--color-checkbox-bg);
+  --color-checkbox-border: var(--color-checkbox-border);
+  --color-button-text: var(--color-button-text);
 }
 
 /* Отключаем темную тему */
@@ -57,23 +71,26 @@ body {
 }
 
 /* Утилиты для бейджей */
-.badge-hit {
+.badge {
   font-family: var(--font-gilroy);
   font-weight: 500;
   letter-spacing: 0;
 }
 
-.badge-discount {
-  font-family: var(--font-gilroy);
-  font-weight: 500;
-  letter-spacing: 0;
-}
 
 /* Анимация мигания кнопки */
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 rgba(253, 176, 86, 0); }
-  50% { box-shadow: 0 0 25px rgba(253, 176, 86, 0.7); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(253, 176, 86, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 25px rgba(253, 176, 86, 0.7);
+  }
 }
+
 .animate-pulse-glow {
   animation: pulse-glow 1.5s ease-in-out infinite;
 }

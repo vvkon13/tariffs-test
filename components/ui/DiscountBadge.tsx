@@ -2,43 +2,40 @@
 'use client';
 
 interface DiscountBadgeProps {
-  percent: number;
-  isHit?: boolean;      // Самая большая скидка
-  isVertical?: boolean; // Вертикальная карточка
-  className?: string;
+    percent: number;
+    isHit?: boolean;      // Самая большая скидка
+    isVertical?: boolean; // Вертикальная карточка
+    className?: string;
 }
 
 export function DiscountBadge({ percent, isHit = false, isVertical = false, className = '' }: DiscountBadgeProps) {
-  return (
-    <>
-      {/* 🏷️ Бейдж со скидкой */}
-      <div 
-        className={`absolute flex items-center gap-2.5 px-2 py-1.25 rounded-full bg-white/10 backdrop-blur-sm badge-discount text-white
-          ${isVertical 
-            ? 'top-0 left-[50px] xl:left-[50px]' // Вертикальная: слева
-            : 'top-0 right-[62px] sm:right-[62px] xs:right-[50px]' // Горизонтальная: справа
-          }
+    return (
+        <>
+
+            <div
+                className={`badge absolute flex items-center gap-2.5 px-2 py-1.25 rounded-b-lg bg-(--color-badge-bg) text-white top-0 
+          ${isVertical
+                        ? 'left-12.5'
+                        : isHit
+                            ? 'right-12.5 xs:right-15.5 xl:right-auto xl:left-12.5'
+                            : 'right-7 xs:right-7.5 xl:right-auto xl:left-12.5'
+                    }
           ${className}
         `}
-        // Адаптивные размеры через Tailwind
-      >
-        <span className="text-[22px] leading-[130%] xl:block hidden">−{percent}%</span>
-        <span className="text-[16px] leading-[130%] sm:block xl:hidden">−{percent}%</span>
-        <span className="text-[13px] leading-[130%] xs:block sm:hidden">−{percent}%</span>
-      </div>
+            >
+                <span className="text-[13px] leading-[130%] block xs:hidden">−{percent}%</span>
+                <span className="text-[16px] leading-[130%] hidden xs:block xl:hidden">−{percent}%</span>
+                <span className="text-[22px] leading-[130%] hidden xl:block">−{percent}%</span>
+            </div>
 
-      {/* ⭐ Бейдж "Хит!" (только для карточки с максимальной скидкой) */}
-      {isHit && (
-        <span 
-          className={`absolute badge-hit text-white
-            top-[10px] right-[20px] xl:block hidden
-            top-[8px] right-[14px] sm:block xl:hidden
-            text-[13px] leading-[130%]
-          `}
-        >
-          хит!
-        </span>
-      )}
-    </>
-  );
+            {/* ⭐ Бейдж "Хит!" (только для карточки с максимальной скидкой) */}
+            {isHit && (
+                <span
+                    className='badge absolute text-accent top-2 right-3.5 xs:top-1.5 xs:right-3.5 xl:right-5 xk:top-2.5'
+                >
+                    хит!
+                </span>
+            )}
+        </>
+    );
 }

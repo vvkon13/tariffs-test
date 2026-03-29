@@ -1,5 +1,6 @@
 //types/tariff.ts
 export interface Tariff {
+  uniqueId: string; 
   id: string;
   period: string;
   price: number;        

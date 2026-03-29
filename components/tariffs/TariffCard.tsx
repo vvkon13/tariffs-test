@@ -1,58 +1,40 @@
 // components/tariffs/TariffCard.tsx
 'use client';
 
-import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { TariffWithDiscount } from '@/types/tariff';
 import { formatPrice } from '@/lib/utils';
-import { Checkbox } from '@/components/ui/Checkbox';
-import { BuyButton } from '@/components/tariffs/BuyButton';
 import { DiscountBadge } from '@/components/ui/DiscountBadge';
 import { useTimer } from '@/contexts/TimerContext';
 
 interface TariffCardProps {
   tariff: TariffWithDiscount;
-  isHorizontal?: boolean;  // true = горизонтальная (для xl+), false = вертикальная
-  isHit?: boolean;         // Карточка с максимальной скидкой
+  isHorizontal?: boolean;
+  isHit?: boolean;
+  isSelected?: boolean;
+  onSelect?: () => void;
 }
 
-export function TariffCard({ tariff, isHorizontal = true, isHit = false }: TariffCardProps) {
+export function TariffCard({ 
+  tariff, 
+  isHorizontal = true, 
+  isHit = false,
+  isSelected = false,
+  onSelect 
+}: TariffCardProps) {
   const { isExpired } = useTimer();
-  const [isChecked, setIsChecked] = useState(false);
-  const [showCheckboxError, setShowCheckboxError] = useState(false);
-  const [isPurchasing, setIsPurchasing] = useState(false);
-
-  const handleBuy = useCallback(() => {
-    if (!isChecked) {
-      setShowCheckboxError(true);
-      setTimeout(() => setShowCheckboxError(false), 2000);
-      return;
-    }
-    setShowCheckboxError(false);
-    setIsPurchasing(true);
-    
-    console.log('Purchase:', { 
-      tariffId: tariff.id, 
-      price: isExpired ? tariff.full_price : tariff.price 
-    });
-    
-    setTimeout(() => {
-      setIsPurchasing(false);
-      alert(`✅ Тариф "${tariff.period}" оформлен!`);
-    }, 1000);
-  }, [isChecked, tariff, isExpired]);
-
-  // Определяем, показывать ли скидочную цену
   const showDiscount = !isExpired;
-  const currentPrice = showDiscount ? tariff.price : tariff.full_price;
   const priceColor = tariff.is_best ? 'text-accent' : 'text-white';
 
   return (
     <motion.article
-      className={`relative rounded-[34px] transition-all duration-300 overflow-hidden
-        ${tariff.is_best || isHit 
-          ? 'border-2 border-accent bg-[#313637]' 
-          : 'border-2 border-[#484D4E] bg-[#313637] hover:border-accent/70'
+      onClick={onSelect}
+      className={`relative rounded-[34px] cursor-pointer transition-all duration-300 overflow-hidden
+        ${isSelected 
+          ? 'border-2 border-accent bg-accent/10 shadow-lg shadow-accent/20' 
+          : tariff.is_best || isHit 
+            ? 'border-2 border-accent bg-[#313637]' 
+            : 'border-2 border-[#484D4E] bg-[#313637] hover:border-accent/70 hover:bg-[#3a4041]'
         }
         ${isHorizontal 
           ? 'p-[30px_80px_26px_19px] xl:p-[30px_80px_26px_19px] sm:p-[20px_16px_20px_30px] xs:p-[20px_16px_20px_20px]' 
@@ -60,9 +42,26 @@ export function TariffCard({ tariff, isHorizontal = true, isHit = false }: Tarif
         }
       `}
       initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+      animate={{ 
+        opacity: 1, 
+        y: 0,
+        scale: isSelected ? 1.02 : 1
+      }}
       transition={{ duration: 0.3 }}
+      whileHover={{ scale: isSelected ? 1.02 : 1.01 }}
+      whileTap={{ scale: 0.99 }}
     >
+      {/* ✅ Индикатор выбора */}
+      {isSelected && (
+        <motion.div 
+          className="absolute top-4 right-4 w-6 h-6 rounded-full bg-accent flex items-center justify-center"
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+        >
+          <span className="text-[#191e1f] text-sm font-bold">✓</span>
+        </motion.div>
+      )}
+
       {/* 🏷️ Бейджи */}
       <DiscountBadge 
         percent={tariff.discountPercent} 
@@ -73,15 +72,11 @@ export function TariffCard({ tariff, isHorizontal = true, isHit = false }: Tarif
       {isHorizontal ? (
         /* ───────── ГОРИЗОНТАЛЬНАЯ КАРТОЧКА (xl+) ───────── */
         <div className="flex flex-row items-center justify-end gap-10">
-          
           {/* Левая часть: цена и период */}
           <div className="flex flex-col items-center gap-4">
-            {/* Период */}
             <h3 className="text-white font-medium text-[26px] leading-[120%] text-center">
               {tariff.period}
             </h3>
-            
-            {/* Цена */}
             <div className="flex flex-col items-end">
               <AnimatePresence mode="wait">
                 {showDiscount ? (
@@ -115,34 +110,20 @@ export function TariffCard({ tariff, isHorizontal = true, isHit = false }: Tarif
             </div>
           </div>
 
-          {/* Правая часть: описание + форма */}
-          <div className="flex flex-col gap-6 min-w-[280px]">
+          {/* Правая часть: только описание */}
+          <div className="min-w-[280px]">
             <p className="text-white font-normal text-[16px] leading-[130%] text-left">
               {tariff.text}
             </p>
-            
-            <div className="flex flex-col gap-3">
-              <Checkbox
-                checked={isChecked}
-                onChange={setIsChecked}
-                showError={showCheckboxError}
-                label="Согласен с условиями оферты"
-              />
-              <BuyButton onClick={handleBuy} disabled={isPurchasing} />
-            </div>
           </div>
         </div>
 
       ) : (
         /* ───────── ВЕРТИКАЛЬНАЯ КАРТОЧКА (<xl) ───────── */
         <div className="flex flex-col items-center gap-10">
-          
-          {/* Период */}
           <h3 className="text-white font-medium text-[26px] leading-[120%] text-center">
             {tariff.period}
           </h3>
-          
-          {/* Цена */}
           <div className="flex flex-col items-center">
             <AnimatePresence mode="wait">
               {showDiscount ? (
@@ -174,27 +155,14 @@ export function TariffCard({ tariff, isHorizontal = true, isHit = false }: Tarif
               )}
             </AnimatePresence>
           </div>
-          
-          {/* Описание */}
           <p className="text-white font-normal text-[16px] leading-[130%] text-left w-full mt-auto">
             {tariff.text}
           </p>
-          
-          {/* Форма */}
-          <div className="flex flex-col gap-3 w-full">
-            <Checkbox
-              checked={isChecked}
-              onChange={setIsChecked}
-              showError={showCheckboxError}
-              label="Согласен с условиями оферты"
-            />
-            <BuyButton onClick={handleBuy} disabled={isPurchasing} />
-          </div>
         </div>
       )}
 
       {/* ✨ Свечение для акцентной карточки */}
-      {(tariff.is_best || isHit) && (
+      {(tariff.is_best || isHit) && !isSelected && (
         <motion.div
           className="absolute inset-0 rounded-[34px] border-2 border-accent/30 pointer-events-none"
           animate={{ opacity: [0.2, 0.5, 0.2] }}
