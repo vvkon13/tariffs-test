@@ -1,26 +1,71 @@
+/* app/globals.css */
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Colors */
+  --color-white: #FFFFFF;
+  --color-accent: #FDB056;
+  --color-accent-warning: #FFBB00; 
+  --color-accent-error: #EF4444;   
+  --color-text-gray: #CDCDCD;
+  --color-text-primary: #FFFFFF;
+  --color-bg-dark: #313637;
+  
+  /* Fonts */
+  --font-montserrat: var(--font-montserrat), system-ui, sans-serif;
+  --font-raleway: var(--font-raleway), system-ui, sans-serif;
+  
+  /* Spacing */
+  --header-height: 103px;
 }
 
+/* 🎯 Tailwind v4: Custom theme values */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Colors */
+  --color-white: var(--color-white);
+  --color-accent: var(--color-accent);
+  --color-accent-warning: var(--color-accent-warning);
+  --color-accent-error: var(--color-accent-error);
+  --color-text-gray: var(--color-text-gray);
+  --color-text-primary: var(--color-text-primary);
+  --color-bg-dark: var(--color-bg-dark);
+  
+  /* Fonts */
+  --font-montserrat: var(--font-montserrat);
+  --font-raleway: var(--font-raleway);
+  
+  /* Custom breakpoints (по макету) */
+  --breakpoint-3xl: 1920px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #171717;
   }
 }
 
+/* 🧱 Base styles */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg-dark);
+  color: var(--color-text-primary);
+  font-family: var(--font-montserrat);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 rgba(253, 176, 86, 0); }
+  50% { box-shadow: 0 0 20px rgba(253, 176, 86, 0.6); }
+}
+.animate-pulse-glow {
+  animation: pulse-glow 1.5s ease-in-out infinite;
 }
