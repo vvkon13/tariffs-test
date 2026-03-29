@@ -28,11 +28,9 @@ export function Timer() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="font-raleway font-bold uppercase tracking-tight"
+            className="font-raleway font-bold uppercase tracking-tight leading-[110%] text-[20px] xs:text-[32px] xl:text-[40px]"
             style={{ 
               color: timerColor,
-              fontSize: 'clamp(32px, 8vw, 40px)',
-              lineHeight: '110%',
             }}
           >
             {String(minutes).padStart(2, '0')}
@@ -44,8 +42,7 @@ export function Timer() {
             key="expired"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="font-raleway font-bold text-text-gray"
-            style={{ fontSize: 'clamp(32px, 8vw, 40px)', lineHeight: '110%' }}
+            className="font-raleway font-bold text-text-gray leading-[110%] text-[20px] xs:text-[32px] xl:text-[40px]"
           >
             00:00
           </motion.span>

@@ -31,7 +31,7 @@ export function DiscountBadge({ percent, isHit = false, isVertical = false, clas
             {/* ⭐ Бейдж "Хит!" (только для карточки с максимальной скидкой) */}
             {isHit && (
                 <span
-                    className='badge absolute text-accent top-2 right-3.5 xs:top-1.5 xs:right-3.5 xl:right-5 xk:top-2.5'
+                    className='badge absolute text-accent top-2 right-3.5 xs:top-1.5 xs:right-3.5 xl:right-5 xk:top-2.5 text-[13px] xs:text-[16px] xl:xs:text-[22px]'
                 >
                     хит!
                 </span>

@@ -20,10 +20,8 @@ export function MainBuyButton({
     <motion.button
       onClick={onClick}
       disabled={disabled || isLoading}
-      className="w-[352px] h-[66px] px-[60px] py-5 
-        bg-[#FDB056] text-[#191E1F] 
-        font-montserrat font-bold text-[20px] leading-[130%]
-        rounded-[20px]
+      className="py-4 xs:py-5 w-full sm:max-w-88 rounded-[20px] bg-[#FDB056] text-[#191E1F] 
+        font-montserrat font-bold leading-[130%] text-[18px] xl:text-[20px] 
         disabled:opacity-50 disabled:cursor-not-allowed
         hover:bg-[#FDB056]/90 active:scale-[0.98] 
         transition-all duration-200

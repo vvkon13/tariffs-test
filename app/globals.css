@@ -29,6 +29,8 @@
   --color-button-text: #191E1F;
 
   --color-badge-bg: #FD5656;
+
+  --color-header-bg: rgba(29, 91, 67, 1);
 }
 
 @theme inline {

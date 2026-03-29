@@ -7,6 +7,7 @@ import { AgreementCheckbox } from '@/components/ui/AgreementCheckbox';
 import { MainBuyButton } from '@/components/tariffs/MainBuyButton';
 import { useTariffSelection } from '@/contexts/TariffSelectionContext';
 import { useTimer } from '@/contexts/TimerContext';
+import { InfoCard } from '../ui/InfoCard';
 
 interface TariffSelectionWrapperProps {
   tariffs: TariffWithDiscount[];
@@ -35,16 +36,18 @@ export function TariffSelectionWrapper({ tariffs }: TariffSelectionWrapperProps)
   return (
     <>
       {/* Секция тарифов */}
-      <section className="container mx-auto px-4 py-8">
+      <section className="container mx-auto py-8 space-y-5">
         <TariffsGrid 
           tariffs={tariffs}
           selectedTariffId={selectedTariffId}
           onSelectTariff={setSelectedTariffId}
         />
+        <InfoCard/>
       </section>
+      
 
       {/* Футер с чекбоксом и кнопкой */}
-      <section className="container mx-auto px-4 mt-8">
+      <section className="container mx-auto mt-8">
         <div className="flex flex-col items-center gap-6">
           {/* Чекбокс согласия */}
           <AgreementCheckbox 

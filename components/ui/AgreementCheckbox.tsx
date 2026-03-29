@@ -19,14 +19,21 @@ export function AgreementCheckbox({
   offerUrl = '/',
   privacyUrl = '/'
 }: AgreementCheckboxProps) {
+  
+  const handleCheckboxClick = () => {
+    onChange(!checked);
+    if (showError) onChange(false);
+  };
+
   return (
-    <label className="flex items-start gap-3 cursor-pointer select-none group max-w-[600px]">
-      {/* Кастомный чекбокс 32x32px */}
+    <div className="flex items-start gap-3 select-none max-w-150">
+      
       <motion.div
-        className={`relative w-8 h-8 min-w-8 rounded-lg border-2 flex items-center justify-center
+        onClick={handleCheckboxClick}
+        className={`relative w-8 h-8 min-w-8 rounded-sm border-2 flex items-center justify-center cursor-pointer transition-colors duration-200
           ${checked 
             ? 'bg-[#424748] border-accent' 
-            : 'bg-[#424748] border-[#606566] group-hover:border-accent/70'
+            : 'bg-[#424748] border-[#606566] hover:border-accent/70'  
           }
           ${showError ? 'border-[#EF4444] ring-2 ring-[#EF4444]/30' : ''}
         `}
@@ -34,32 +41,35 @@ export function AgreementCheckbox({
           scale: [1, 1.05, 1], 
           borderColor: ['#EF4444', '#DC2626', '#EF4444'] 
         } : {}}
-        transition={{ duration: 0.2 }}
+
       >
         {checked && (
           <motion.svg
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
+            width="19.091125"
+            height="13.636353"
+            viewBox="0 0 19.0911 13.6364"
             fill="none"
             initial={{ scale: 0, pathLength: 0 }}
             animate={{ scale: 1, pathLength: 1 }}
             transition={{ duration: 0.2 }}
           >
+            <path
+              d="M17.9142 0.213694L6.8306 11.9484L1.18961 5.68024C0.935272 5.39995 0.505151 5.37796 0.225499 5.62961C-0.0541534 5.88127 -0.0767812 6.3128 0.174874 6.59245L6.31124 13.4107C6.43908 13.5525 6.62017 13.6337 6.81065 13.6364L6.81864 13.6364C7.00644 13.6364 7.18484 13.5591 7.31403 13.4226L18.9049 1.14987C19.1633 0.876231 19.1513 0.444767 18.8783 0.186401C18.6053 -0.0726051 18.1712 -0.0600135 17.9142 0.213694Z"
+              fill="rgb(96,101,102)"
+              fillRule="evenodd"
+            />
             <path 
-              d="M16.666 5L7.5 14.166L3.333 10" 
-              stroke="#FDB056" 
-              strokeWidth="2.5" 
-              strokeLinecap="round" 
-              strokeLinejoin="round"
+              d="M8.55288 10.1249L7.61305 11.12L7.48482 11.2557L6.8306 11.9484L6.1934 11.2404L6.06795 11.101L5.15272 10.084L2.32053 6.9369L1.18961 5.68024C0.935272 5.39995 0.505151 5.37796 0.225499 5.62961C-0.0541534 5.88127 -0.0767812 6.3128 0.174874 6.59245L1.30652 7.84984L6.31124 13.4107C6.43908 13.5525 6.62017 13.6337 6.81065 13.6364L6.81864 13.6364C7.00644 13.6364 7.18484 13.5591 7.31403 13.4226L17.7433 2.37985L18.9049 1.14987C19.1633 0.876231 19.1513 0.444767 18.8783 0.186401C18.6053 -0.0726051 18.1712 -0.0600135 17.9142 0.213694L16.7524 1.44366L8.55288 10.1249Z"
+              fill="rgb(253,176.18,86)" 
+              fillRule="evenodd"
             />
           </motion.svg>
         )}
       </motion.div>
       
-      {/* Скрытый инпут */}
       <input
         type="checkbox"
+        id="agreement-checkbox"
         className="sr-only"
         checked={checked}
         onChange={(e) => {
@@ -69,8 +79,7 @@ export function AgreementCheckbox({
         aria-label="Согласие с офертой"
       />
       
-      {/* Текст с ссылками */}
-      <span className="text-[#CDCDCD] text-[16px] leading-[110%] font-normal">
+      <span className="text-[#CDCDCD] leading-[110%] font-normal text-[12px] xl:text-[16px]">
         Я согласен с{' '}
         <Link 
           href={offerUrl}
@@ -90,6 +99,6 @@ export function AgreementCheckbox({
           Политикой конфиденциальности
         </Link>
       </span>
-    </label>
+    </div>
   );
 }
